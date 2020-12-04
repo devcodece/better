@@ -54,8 +54,40 @@ class TdtProduct(models.Model):
     def __str__(self):
         return self.tx_product_name
 
+class CdtProductPhoto(models.Model):
+    tx_url_photo = models.ImageField('Photo', null=True, blank=True)
+    bl_primary = models.BooleanField('Primary', default=False)
+    #id_color = models.ForeignKey(CdtColor, on_delete = models.CASCADE)
 
-class CdtSize(models.Model):
+    class Meta:
+        verbose_name = 'Photo'
+        verbose_name_plural = 'Photos'
+
+    #objects = ColorManager()
+    
+    def __str__(self):
+        return self.tx_url_photo
+
+class CdtColor(models.Model):
+    tx_name_color = models.CharField(max_length=50)
+    id_product = models.ForeignKey(TdtProduct, on_delete=models.CASCADE)
+    id_photo = models.ManyToManyField(CdtProductPhoto)
+
+    class Meta:
+        verbose_name = 'Color'
+        verbose_name_plural = 'Colors'
+
+    #objects = ColorManager()
+    
+    def __str__(self):
+        return self.tx_name_color
+
+
+
+
+
+
+""" class CdtSize(models.Model):
     size = models.CharField('Size', max_length=4)
     #id_category = models.ForeignKey(CdtCategory, on_delete=models.PROTECT, null=True)
 
@@ -79,4 +111,4 @@ class TdtSkuProduct(models.Model):
         verbose_name_plural = 'SKU Products'
     
     def __str__(self):
-        return self.sku
+        return self.sku """
