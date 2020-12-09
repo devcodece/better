@@ -54,24 +54,12 @@ class TdtProduct(models.Model):
     def __str__(self):
         return self.tx_product_name
 
-class CdtProductPhoto(models.Model):
-    tx_url_photo = models.ImageField('Photo', null=True, blank=True)
-    bl_primary = models.BooleanField('Primary', default=False)
-    #id_color = models.ForeignKey(CdtColor, on_delete = models.CASCADE)
-
-    class Meta:
-        verbose_name = 'Photo'
-        verbose_name_plural = 'Photos'
-
-    #objects = ColorManager()
-    
-    def __str__(self):
-        return self.tx_url_photo
 
 class CdtColor(models.Model):
     tx_name_color = models.CharField(max_length=50)
-    id_product = models.ForeignKey(TdtProduct, on_delete=models.CASCADE)
-    id_photo = models.ManyToManyField(CdtProductPhoto)
+    #id_product = models.ForeignKey(TdtProduct, on_delete=models.CASCADE)
+    #id_product = models.ManyToManyField(TdtProduct)
+    #id_photo = models.ManyToManyField(CdtProductPhoto)
 
     class Meta:
         verbose_name = 'Color'
@@ -83,11 +71,35 @@ class CdtColor(models.Model):
         return self.tx_name_color
 
 
+class CdtProductColor(models.Model):
+    id_product = models.ForeignKey(TdtProduct, on_delete=models.PROTECT, null=True)
+    id_color = models.ForeignKey(CdtColor, on_delete=models.PROTECT, null=True)
+    #id_photo = models.ManyToManyField(CdtProductPhoto)
+
+    class Meta:
+        verbose_name = 'Product Color'
+        verbose_name_plural = 'Products Colors'
+    
+    def __str__(self):
+        return str(self.id_product) + ' ' + str(self.id_color)
 
 
+class CdtProductPhoto(models.Model):
+    tx_url_photo = models.ImageField('Photo', upload_to='product_photo', null=True, blank=True)
+    bl_primary = models.BooleanField('Primary', default=False)
+    id_product_color = models.ForeignKey(CdtProductColor, on_delete = models.CASCADE, null=True)
 
+    class Meta:
+        verbose_name = 'Photo'
+        verbose_name_plural = 'Photos'
 
-""" class CdtSize(models.Model):
+    #objects = ColorManager()
+    
+    def __str__(self):
+        return str(self.id)
+
+        
+class CdtSize(models.Model):
     size = models.CharField('Size', max_length=4)
     #id_category = models.ForeignKey(CdtCategory, on_delete=models.PROTECT, null=True)
 
@@ -99,10 +111,10 @@ class CdtColor(models.Model):
         return self.size
 
 class TdtSkuProduct(models.Model):
-    sku = models.CharField('Sku', max_length=75)
-    id_product = models.ForeignKey(TdtProduct, on_delete=models.PROTECT)
-    #id_product_color = models.ForeignKey(CdtColor, on_delete=models.PROTECT)
-    id_size = models.ForeignKey(CdtSize, on_delete=models.PROTECT)
+    sku = models.CharField(max_length=10, primary_key=True)
+    id_product = models.ForeignKey(TdtProduct, on_delete=models.PROTECT, null=True)
+    id_product_color = models.ForeignKey(CdtProductColor, on_delete=models.PROTECT, null=True)
+    id_size = models.ForeignKey(CdtSize, on_delete=models.PROTECT, null=True)
     quantity = models.PositiveIntegerField('Quantity')
     price = models.DecimalField('Price', max_digits=9, decimal_places=2)
 
@@ -111,4 +123,4 @@ class TdtSkuProduct(models.Model):
         verbose_name_plural = 'SKU Products'
     
     def __str__(self):
-        return self.sku """
+        return self.sku

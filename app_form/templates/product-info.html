@@ -12,6 +12,13 @@
                     <td>Brand</td>
                     <td>Vendor</td>
                 </tr>
+                {% for u in products %}
+                <tr>
+                    <td>{{u.tx_product_name}}</td>
+                    <td>{{u.id_brand}}</td>
+                    <td>{{u.id_vendor}}</td>
+                </tr>
+                {% endfor %}
             </table>
         </div>
     </div>

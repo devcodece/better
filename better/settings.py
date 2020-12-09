@@ -121,8 +121,12 @@ USE_TZ = True
 
 STATIC_URL = '/static/'
 
+#indica la ruta media_url para urls.py
 MEDIA_URL = '/images/'
 
 STATICFILES_DIRS = [
     os.path.join(BASE_DIR, "static"), '/static/',
 ]
+
+#Agregar la ubicacion del directorio images
+MEDIA_ROOT = os.path.join(BASE_DIR, 'static/images')
