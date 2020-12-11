@@ -1,4 +1,4 @@
-from django.shortcuts import render
+from django.shortcuts import render, redirect
 from django.http import HttpResponseRedirect
 from django.views.generic import CreateView, TemplateView
 from . forms import TdtProductForm
@@ -53,6 +53,44 @@ def product_detail(request, pk_test):
     }
     return render(request, 'product-detail.html', context)
 
+def createProduct(request):
+    #Llama de TdtProductForm
+    form = TdtProductForm()
+
+    #obtener los datos que se envian por POST
+    if request.method == 'POST':
+        form = TdtProductForm(request.POST)
+        #Si la informacion del formulario es valido
+        if form.is_valid():
+            form.save()
+            return redirect('/')
+
+    context = {
+        'form':form,
+    }
+
+    return render(request, 'product_form.html', context)
+
+def updateProduct(request, pk):
+    products = TdtProduct.objects.get(id=pk)
+    form = TdtProductForm(instance=products)
+
+    if request.method == 'POST':
+        form = TdtProductForm(request.POST, instance=products)
+        if form.is_valid():
+            form.save()
+            return redirect('/')
+    
+    context = {
+        'form':form,
+        }
+
+    return render(request, 'product_form.html', context)
+
+def deleteProduct(request, pk):
+    context = {
+        '':
+    }
 
 #class NewProduct(CreateView):
     #model = TdtProduct

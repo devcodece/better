@@ -15,7 +15,8 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path
-from app_form.views import home, product_info, product_detail
+from app_form.views import (home, product_info, product_detail, 
+createProduct, updateProduct, deleteProduct)
 from django.conf.urls.static import static
 from django.conf import settings
 #NewProduct, Success
@@ -25,5 +26,14 @@ urlpatterns = [
     path('', home, name='home'),
     path('product-detail/<str:pk_test>/', product_detail, name='product-detail'),
     path('product-info', product_info, name='product-info'),
+
+    #Create Product
+    path('product-form', createProduct, name='product-form'),
+    #Update Product
+    path('update-product/<str:pk>/', updateProduct, name='update-product'),
+    #Delete Product
+    path('delete-product/<str:pk>/', deleteProduct, name='delete-product'),
+
+
     #path('success', Success.as_view(), name='success'),
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

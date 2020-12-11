@@ -2,6 +2,39 @@ from django.db import models
 
 # Create your models here.
 
+class CdtCategoryPerson(models.Model):
+    tx_category_person = models.CharField('Category Person', max_length=50)
+
+    class Meta:
+        verbose_name = 'Category Person'
+        verbose_name_plural = 'Categories Persons'
+
+    def __str__(self):
+        return self.tx_category_person
+
+class CdtCategory(models.Model):
+    tx_category_name = models.CharField(max_length=50)
+    id_category_person = models.ForeignKey(CdtCategoryPerson, on_delete=models.CASCADE, null=True)
+
+    class Meta:
+        verbose_name = 'Category'
+        verbose_name_plural = 'Categories'
+
+    def __str__(self):
+        return self.tx_category_name
+
+
+class CdtSubcategory(models.Model):
+    tx_subcategory_name = models.CharField('Subcategory', max_length=50)
+    id_category = models.ForeignKey(CdtCategory, on_delete=models.CASCADE)
+
+    class Meta:
+        verbose_name = 'Subcategory'
+        verbose_name_plural = 'Subcategories'
+
+    def __str__(self):
+        return self.tx_subcategory_name
+
 class CdtBrand(models.Model):
     tx_brand_name = models.CharField(max_length=50)
 
@@ -35,10 +68,10 @@ class TdtProduct(models.Model):
 
     tx_product_name = models.CharField('Product Name', max_length=75)
     tx_description = models.TextField('Description', max_length=300)
-    #id_category_person = models.ForeignKey(CdtCategoryPerson, on_delete=models.CASCADE, null=True)
+    id_category_person = models.ForeignKey(CdtCategoryPerson, on_delete=models.CASCADE, null=True)
     #nm_sale_unit = models.DecimalField(max_digits=8, decimal_places=2)
-    #id_category = models.ForeignKey(CdtCategory, on_delete=models.CASCADE, null=True)
-    #id_subcategory = models.ForeignKey(CdtSubcategory, on_delete=models.CASCADE)
+    id_category = models.ForeignKey(CdtCategory, on_delete=models.CASCADE, null=True)
+    id_subcategory = models.ForeignKey(CdtSubcategory, on_delete=models.CASCADE, null=True)
     id_brand = models.ForeignKey(CdtBrand, on_delete=models.CASCADE)
     id_vendor = models.ForeignKey(CdtVendor, on_delete=models.CASCADE)
     #id_color = models.ManyToManyField(CdtColor)
@@ -101,7 +134,7 @@ class CdtProductPhoto(models.Model):
         
 class CdtSize(models.Model):
     size = models.CharField('Size', max_length=4)
-    #id_category = models.ForeignKey(CdtCategory, on_delete=models.PROTECT, null=True)
+    id_category = models.ForeignKey(CdtCategory, on_delete=models.PROTECT, null=True)
 
     class Meta:
         verbose_name = 'Size'

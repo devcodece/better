@@ -10,7 +10,7 @@
         <h5>New Product</h5>
         <hr>
         <div class="card card-body">
-            <a href="" class="btn btn-primary btn-sm btn-block">Create Product</a>
+            <a href="{% url 'product-info' %}" class="btn btn-primary btn-sm btn-block">Create Product</a>
             <table class="table table-sm text-center">
                 <tr>
                     <th>Name</th>
@@ -60,7 +60,7 @@
                     </td>
                     <td>{{ c.id_color }}</td>
                     <td>
-                        <a href="" class="btn btn-success">
+                        <a href="{% url 'update-product' c.id %}" class="btn btn-success">
                             <i class="fa fa-edit"></i>
                         </a>
                         <a href="" class="btn btn-danger">
