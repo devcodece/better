@@ -105,7 +105,7 @@ class CdtColor(models.Model):
 
 
 class CdtProductColor(models.Model):
-    id_product = models.ForeignKey(TdtProduct, on_delete=models.PROTECT, null=True)
+    id_product = models.ForeignKey(TdtProduct, on_delete=models.CASCADE, null=True)
     id_color = models.ForeignKey(CdtColor, on_delete=models.PROTECT, null=True)
     #id_photo = models.ManyToManyField(CdtProductPhoto)
 
@@ -145,8 +145,8 @@ class CdtSize(models.Model):
 
 class TdtSkuProduct(models.Model):
     sku = models.CharField(max_length=10, primary_key=True)
-    id_product = models.ForeignKey(TdtProduct, on_delete=models.PROTECT, null=True)
-    id_product_color = models.ForeignKey(CdtProductColor, on_delete=models.PROTECT, null=True)
+    id_product = models.ForeignKey(TdtProduct, on_delete=models.CASCADE, null=True)
+    id_product_color = models.ForeignKey(CdtProductColor, on_delete=models.CASCADE, null=True)
     id_size = models.ForeignKey(CdtSize, on_delete=models.PROTECT, null=True)
     quantity = models.PositiveIntegerField('Quantity')
     price = models.DecimalField('Price', max_digits=9, decimal_places=2)

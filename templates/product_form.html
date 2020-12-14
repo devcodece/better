@@ -1,0 +1,25 @@
+{% extends 'main.html' %}
+{% load static %}
+
+{% block content %}
+
+<br>
+<div class="row">
+    <div class="col-md-3"></div>
+    <div class="col-md-6">
+        <div class="card card-body">
+            <h4 class="text-center"><strong>Product</strong></h4>
+            <hr>
+            <form action="" method="POST">
+                {% csrf_token %}
+                {{ form.as_p }}
+                <input class="btn btn-success" type="submit" name="Submit" value="Save">
+                <a class="btn btn-info" href="{% url 'home' %}">Come Back</a>
+            </form>
+        </div>
+    </div>
+    <div class="col-md-3"></div>
+</div>
+
+{% endblock content %}
+    

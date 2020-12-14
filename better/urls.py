@@ -16,7 +16,8 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import path
 from app_form.views import (home, product_info, product_detail, 
-createProduct, updateProduct, deleteProduct)
+createProduct, updateProduct, deleteProduct, createColorPhoto,
+updateColorPhoto, deleteProductColor)
 from django.conf.urls.static import static
 from django.conf import settings
 #NewProduct, Success
@@ -34,6 +35,13 @@ urlpatterns = [
     #Delete Product
     path('delete-product/<str:pk>/', deleteProduct, name='delete-product'),
 
+
+    #Add Photo
+    path('create-photo/<str:pk>', createColorPhoto, name='create-photo'),
+    #Update Photo
+    path('update-photo/<str:pk>', updateColorPhoto, name='update-photo'),
+    #Delete ProductColor
+    path('delete-pcolor/<str:pk>', deleteProductColor, name='delete-pcolor'),
 
     #path('success', Success.as_view(), name='success'),
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
