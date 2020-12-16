@@ -63,6 +63,7 @@
                         <th>Product</th>
                         <th>Color</th>
                         <th>Action</th>
+                        <th>SKU</th>
                     </tr>
                     
                     {% for c in color %}
@@ -93,8 +94,56 @@
                                 <i class="fa fa-trash"></i>
                             </a>
                         </td>
+                        <td>
+                            <a href="{% url 'create-sku' c.id c.id_product %}" class="btn btn-warning">
+                                <i class="fa fa-plus-square"></i>
+                            </a>
+                        </td>
                     </tr>
                     {% endfor %}
+                </table>
+            </div>
+            <hr>
+        </div>
+    </div>
+    <div class="row">
+        
+        <div class="col-md">
+            <h3><strong>Step 3</strong>
+                <h5 class="text-center text-primary"><strong>Add Product SKU</strong></h5>
+            </h3>
+            <hr>
+            <div class="card card-body">
+                <table class="table table-sm text-center">
+                    <tr>
+                        <th>SKU</th>
+                        <th>Product</th>
+                        <th>Product Color</th>
+                        <th>Size</th>
+                        <th>Quantity</th>
+                        <th>Price</th>
+                        <th>Action</th>
+                    </tr>
+                    <tr>
+                        <td>
+                        {% for p in photo %}
+                            <img src="{{ p.tx_url_photo.url }}" style="width: 100px;">
+                        {% endfor %}
+                        </td>
+                        <td>{{product.id_product}}</td>
+                        <td>{{product.id_color}}</td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td>
+                            <a href="" class="btn btn-success">
+                                <i class="fa fa-edit"></i>
+                            </a>
+                            <a href="" class="btn btn-danger">
+                                <i class="fa fa-trash"></i>
+                            </a>
+                        </td>
+                    </tr>
                 </table>
             </div>
         </div>

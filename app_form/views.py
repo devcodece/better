@@ -180,28 +180,40 @@ def deleteProduct(request, pk):
     
     return render(request, 'delete.html', context)
 
-#class NewProduct(CreateView):
-    #model = TdtProduct
-    #form_class = ProductSkuProductForm
-    #template_name = 'form-product.html'
 
-    #def form_valid(self, form):
-        #product = form['product'].save()
-        #sku = form['sku'].save(commit=False)
-        #print(product + '====================')
-        #sku.id_product = product
-        #sku.save()
-        #return HttpResponseRedirect(reverse('success'))
+def createProductSku(request, pk_one, pk_two):
 
-#def create(request):
-    #TdtProductInLineFormSet = inlineformset_factory(TdtProduct, TdtSkuProduct, form=TdtProductForm)
-    #productForm = TdtProductForm(request.POST)
+    id_product = pk_one
+    id_pcolor = pk_two
+    #Llamar al primer form
+    form_one = CdtProductColorForm(initial={'id_product':id_product})
+    #Llamar al segundo form
+    #form_two = CdtProductPhotoForm
 
+    #ColorInLineFormSet = inlineformset_factory(CdtProductColor, CdtProductPhoto, form=CdtProductPhotoForm)
+    #ColorInLineFormSet = inlineformset_factory(CdtProductColor, CdtProductPhoto, fields=('id_product','id_color'))
+
+    form = CdtProductColorForm()
+    formset = PhotoInLineFormSet()
 
 
+    if request.method == 'POST':
+        form = CdtProductColorForm(request.POST)
+        formset = PhotoInLineFormSet(request.POST, request.FILES)
+        if form.is_valid():
+            photo = form.save(commit=False)
+            photo.save() 
+            if formset.is_valid():
+                formset.instance = photo
+                formset.save()
+                return redirect('home')
 
 
+    context = {
+        'form_one':form_one,
+        #'form_two':form_two,
+        'formset':formset,
+    }
 
-#class Success(TemplateView):
-    #template_name = 'success.html'
+    return render(request, 'colorphoto.html', context)
 

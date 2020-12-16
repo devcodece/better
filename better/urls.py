@@ -17,7 +17,7 @@ from django.contrib import admin
 from django.urls import path
 from app_form.views import (home, product_info, product_detail, 
 createProduct, updateProduct, deleteProduct, createColorPhoto,
-updateColorPhoto, deleteProductColor)
+updateColorPhoto, deleteProductColor, createProductSku)
 from django.conf.urls.static import static
 from django.conf import settings
 #NewProduct, Success
@@ -42,6 +42,9 @@ urlpatterns = [
     path('update-photo/<str:pk>', updateColorPhoto, name='update-photo'),
     #Delete ProductColor
     path('delete-pcolor/<str:pk>', deleteProductColor, name='delete-pcolor'),
+
+    #Add SKU
+    path('create-sku/<str:pk_one>/<str:pk_two>', createProductSku, name='create-sku')
 
     #path('success', Success.as_view(), name='success'),
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
