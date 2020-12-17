@@ -2,24 +2,23 @@ from django.shortcuts import render, redirect
 from django.http import HttpResponseRedirect
 from django.views.generic import CreateView, TemplateView
 from . forms import (TdtProductForm, CdtProductColorForm,
-PhotoInLineFormSet, CdtProductPhotoForm)
+PhotoInLineFormSet, CdtProductPhotoForm, TdtSkuProductForm)
 #, TdtSkuProductForm, ProductSkuProductForm
 #from django.urls import reverse
-from . models import TdtProduct, CdtColor, CdtProductPhoto, CdtProductColor
+from . models import (TdtProduct, CdtColor, CdtProductPhoto, 
+CdtProductColor, TdtSkuProduct)
 from django.forms.models import inlineformset_factory
 
 def home(request):
     products = TdtProduct.objects.all()
     color = CdtProductColor.objects.all()
-    #color = photo.id_product_color.all()
-    #photos = color.id_photo.all()
-    #photos_primary = photos.filter(bl_primary=True)
+    sku = TdtSkuProduct.objects.all()
     
 
     context = {
         'products':products,
         'color':color,
-        #'color':color,
+        'sku':sku,
     }
     #print(photo)
 
@@ -75,8 +74,9 @@ def createProduct(request):
 
 
 def createColorPhoto(request, pk):
-    #print(pk)
+    print(pk)
     id_product = pk
+
     #Llamar al primer form
     form_one = CdtProductColorForm(initial={'id_product':id_product})
     #Llamar al segundo form
@@ -112,8 +112,13 @@ def createColorPhoto(request, pk):
 
 
 def updateColorPhoto(request, pk):
+    
+    
+    
     pcolor = CdtProductColor.objects.get(id=pk)
     
+
+
     form_one = CdtProductColorForm(instance=pcolor)
     formset = PhotoInLineFormSet(instance=pcolor)
 
@@ -183,37 +188,36 @@ def deleteProduct(request, pk):
 
 def createProductSku(request, pk_one, pk_two):
 
-    id_product = pk_one
-    id_pcolor = pk_two
+    id_product = int(pk_one)
+    id_pc = int(pk_two)
+    
+    #print(id_product + '***********')
+    #print(pk_one + '===========')
     #Llamar al primer form
-    form_one = CdtProductColorForm(initial={'id_product':id_product})
+    form = TdtSkuProductForm(initial={
+        'id_product_color':id_pc,
+        'id_product':id_product,
+    })
     #Llamar al segundo form
     #form_two = CdtProductPhotoForm
 
     #ColorInLineFormSet = inlineformset_factory(CdtProductColor, CdtProductPhoto, form=CdtProductPhotoForm)
     #ColorInLineFormSet = inlineformset_factory(CdtProductColor, CdtProductPhoto, fields=('id_product','id_color'))
 
-    form = CdtProductColorForm()
-    formset = PhotoInLineFormSet()
+    #form = CdtProductColorForm()
+    #formset = PhotoInLineFormSet()
 
 
     if request.method == 'POST':
-        form = CdtProductColorForm(request.POST)
-        formset = PhotoInLineFormSet(request.POST, request.FILES)
+        form = TdtSkuProductForm(request.POST)
+        #Si la informacion del formulario es valido
         if form.is_valid():
-            photo = form.save(commit=False)
-            photo.save() 
-            if formset.is_valid():
-                formset.instance = photo
-                formset.save()
-                return redirect('home')
-
+            form.save()
+            return redirect('dashboard')
 
     context = {
-        'form_one':form_one,
-        #'form_two':form_two,
-        'formset':formset,
+        'form':form,
     }
 
-    return render(request, 'colorphoto.html', context)
+    return render(request, 'sku.html', context)
 

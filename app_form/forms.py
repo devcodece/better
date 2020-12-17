@@ -1,6 +1,6 @@
 from django.forms import ModelForm
-from . models import (TdtProduct, CdtProductColor,
-CdtProductPhoto)
+from . models import (TdtProduct, CdtProductColor, CdtProductPhoto,
+TdtSkuProduct)
 from django.forms.models import inlineformset_factory
 #from betterforms.multiform import MultiModelForm
 
@@ -19,17 +19,13 @@ class CdtProductPhotoForm(ModelForm):
         model = CdtProductPhoto
         exclude = ('id_product_color',)
 
+class TdtSkuProductForm(ModelForm):
+    class Meta:
+        model = TdtSkuProduct
+        fields = '__all__'
+
 PhotoInLineFormSet = inlineformset_factory(CdtProductColor, 
 CdtProductPhoto, form=CdtProductPhotoForm, can_delete=True)
 
-
-#class TdtSkuProductForm(ModelForm):
-    #class Meta:
-        #model = TdtSkuProduct
-        #fields = ['sku','id_size','quantity','price']
-
-#class ProductSkuProductForm(MultiModelForm):
-    #form_classes = {
-        #'product':TdtProductForm,
-        #'sku':TdtSkuProductForm,
-    #}
+#SkuInLineFormSet = inlineformset_factory(TdtSkuProduct, 
+#form=TdtSkuProductForm, can_delete=True)

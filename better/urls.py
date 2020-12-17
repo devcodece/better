@@ -44,7 +44,7 @@ urlpatterns = [
     path('delete-pcolor/<str:pk>', deleteProductColor, name='delete-pcolor'),
 
     #Add SKU
-    path('create-sku/<str:pk_one>/<str:pk_two>', createProductSku, name='create-sku')
+    path('create-sku/<int:pk_one>/<str:pk_two>', createProductSku, name='create-sku')
 
     #path('success', Success.as_view(), name='success'),
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

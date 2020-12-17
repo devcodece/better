@@ -37,7 +37,6 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'betterforms',
     'app_form',
     'django_cleanup.apps.CleanupConfig',
 ]
