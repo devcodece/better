@@ -114,7 +114,7 @@ class CdtProductColor(models.Model):
         verbose_name_plural = 'Products Colors'
     
     def __str__(self):
-        return str(self.id_product)
+        return str(self.id_product) + ' ' + str(self.id_color)
 
 
 class CdtProductPhoto(models.Model):

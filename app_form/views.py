@@ -187,9 +187,10 @@ def deleteProduct(request, pk):
 
 
 def createProductSku(request, pk_one, pk_two):
+    sku = TdtSkuProduct.objects.all()
 
-    id_product = int(pk_one)
-    id_pc = int(pk_two)
+    id_pc = pk_one
+    id_product = pk_two
     
     #print(id_product + '***********')
     #print(pk_one + '===========')
@@ -217,6 +218,7 @@ def createProductSku(request, pk_one, pk_two):
 
     context = {
         'form':form,
+        'sku':sku,
     }
 
     return render(request, 'sku.html', context)

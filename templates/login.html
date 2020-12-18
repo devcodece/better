@@ -1,0 +1,41 @@
+{% extends 'main.html' %}
+{% load static %}
+{% block content %}
+<div class="row">
+    <div class="col-md-3"></div>
+    <div class="col-md-6">
+        <br>
+        <br>
+        <div class="card">
+            <div class="card-header bg-info text-center">
+                <div style="font-size: 100px;">
+                    <i class="fa fa-user-circle"></i>
+                </div>
+                
+                <!-- <img src="{% static 'images/log-login.png' %}" class="card-img-top"> -->
+                <h2>Welcome Admin!</h2>
+            </div>
+            <div class="card-body">
+                <form action="" method="POST">
+                    {% csrf_token %}
+                    <div class="form-group">
+                      <label for="exampleInputEmail1">User Name</label>
+                      <input type="text" class="form-control" id="userName">
+                      <small id="emailHelp" class="form-text text-muted">please enter the user data.</small>
+                    </div>
+                    <div class="form-group">
+                      <label for="exampleInputPassword1">Password</label>
+                      <input type="password" class="form-control" id="passwordLogin">
+                    </div>
+                    <br>
+                    <button type="submit" class="btn btn-secondary btn-block">Login</button>
+                </form>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-3"></div>
+</div>
+
+    
+{% endblock content %}
+    

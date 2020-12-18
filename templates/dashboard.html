@@ -95,10 +95,8 @@
                             </a>
                         </td>
                         <td>
-                            <a href="{% url 'create-sku' c.id c.id_product %}" class="btn btn-warning">
-                                <i class="fa fa-plus-square">{{c.id_product}} 
-                                    {{c.id}}
-                                </i>
+                            <a href="{% url 'create-sku' c.id c.id_product.id %}" class="btn btn-warning">
+                                <i class="fa fa-plus-square"></i>
                             </a>
                         </td>
                     </tr>
@@ -132,7 +130,7 @@
                         <td>{{ s.id_product }}</td>
                         <td>{{ s.id_product_color }}</td>
                         <td>{{ s.id_size }}</td>
-                        <td>{{ s.quantity }</td>
+                        <td>{{ s.quantity }}</td>
                         <td>${{ s.price }}</td>
                         <td>
                             <a href="" class="btn btn-success">
