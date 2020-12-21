@@ -1,5 +1,6 @@
+import json
 from django.shortcuts import render, redirect
-from django.http import HttpResponseRedirect
+from django.http import HttpResponseRedirect, HttpResponse
 from django.views.generic import CreateView, TemplateView
 from . forms import (TdtProductForm, CdtProductColorForm,
 PhotoInLineFormSet, CdtProductPhotoForm, TdtSkuProductForm)
@@ -187,7 +188,7 @@ def deleteProduct(request, pk):
 
 
 def createProductSku(request, pk_one, pk_two):
-    sku = TdtSkuProduct.objects.all()
+    sku = TdtSkuProduct.objects.all().order_by('create_date')[:5][::-1]
 
     id_pc = pk_one
     id_product = pk_two
@@ -214,12 +215,30 @@ def createProductSku(request, pk_one, pk_two):
         #Si la informacion del formulario es valido
         if form.is_valid():
             form.save()
-            return redirect('dashboard')
+            #return redirect('dashboard')
 
     context = {
         'form':form,
         'sku':sku,
     }
 
+    """ if request.is_ajax():
+    #Datos para AJAX
+        list_sku = []
+        for l_sku in sku:
+            data_sku = {}
+            data_sku['sku'] = l_sku.sku
+            data_sku['id_product'] = l_sku.id_product
+            data_sku['id_product_color'] = l_sku.id_product_color
+            data_sku['id_size'] = l_sku.id_size
+            data_sku['quantity'] = l_sku.quantity
+            data_sku['price'] = l_sku.price
+            list_sku.append(data_sku)
+        
+        #convirtiendo la lista en tipo json
+        data = json.dumps(list_sku)
+
+        return HttpResponse(data, 'application/jason')
+    else: """
     return render(request, 'sku.html', context)
 
