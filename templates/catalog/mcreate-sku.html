@@ -1,0 +1,62 @@
+{% load static %}
+<br>
+
+<div class="modal-dialog modal-lg" role="document">
+    
+    <div class="modal-content">
+        
+        <div class="modal-header">
+            <h4 class="modal-title"><strong>Add Product SKU</strong></h4>
+            <button class="close" type="button" data-dismiss="modal" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+            </button>
+        </div>
+        <div class="modal-body">
+            <form action="{% url 'create-sku' id_pc id_product %}" method="POST">
+                {% csrf_token %}
+                <div class="form-row" action="">
+                    <div class="form-group col-md-6">
+                        <label for="pName">SKU:</label>
+                        {{ form.sku }}
+                    </div>
+                    <div class="form-group col-md-6">
+                        <label for="pName">Product:</label>
+                        {{ form.id_product }}
+                    </div>
+                </div>
+                <div class="form-row" action="">
+                    <div class="form-group col-md-6">
+                        <label for="pDescription">Product Color:</label>
+                        {{ form.id_product_color }}
+                    </div>
+                    <div class="form-group col-md-6">
+                        <label for="pDescription">Size:</label>
+                        {{ form.id_size }}
+                    </div>
+                </div>
+                <div class="form-row" action="">
+                    <div class="form-group col-md-6">
+                        <label for="catPerson">Quantity:</label>
+                        {{ form.quantity }}
+                    </div>
+                    <div class="form-group col-md-6">
+                        <label for="category">Price:</label>
+                        ${{ form.price }}
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button class="btn btn-warning px-5" type="button" data-dismiss="modal">Close</button>
+                    <button onclick="jumpTo('dSku')" class="btn btn-success px-5" type="submit">Save</button>
+                    <!-- onclick="jumpTo('elements')" -->
+                </div>
+
+            </form>
+        </div>
+    </div>
+</div>
+
+<script>
+
+
+
+    

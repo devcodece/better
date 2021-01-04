@@ -1,152 +1,262 @@
 {% extends 'main.html' %}
 {% load static %}
 {% block content %}
-<!-- {% include 'status.html' %} -->
 <br>
-<h2 class="text-center"><strong>Dashboard</strong></h2>
+<h4 class="text-center text-secondary"><strong>Manage Product Catalog</strong>
+    <i class="fa fa-pencil" style="color: steelblue;"></i>
+</h4>
 <hr>
 <div class="container-fluid">
     <div class="row">
-        <div class="col-md-6">
-            <h3><strong>Step 1</strong>
-                <h5 class="text-center text-primary"><strong>Add Product Base</strong></h5>
-            </h3>
-            <hr>
+        <div class="col-md-6 text-center">
+            <h4 class="text-secondary"><strong>product base</strong>
+                <button onclick="open_createProduct('{% url 'create-product' %}')"
+                style="border: none;"
+                data-toggle="tooltip" title="New Product">
+                    <i class="fa fa-plus-circle" style="color: teal; font-size: 30px;"></i>
+                    <!-- <strong style="color: teal;">one</strong> -->
+                </button>
+            </h4>
             <div class="card card-body">
-                <a href="{% url 'product-form' %}" class="btn btn-primary btn-sm btn-block">Create Product</a>
-                <table class="table table-sm text-center">
-                    <tr>
-                        <th>Name</th>
-                        <th>Brand</th>
-                        <th>Subcategory</th>
-                        <th>Action</th>
-                        <th>Photo</th>
-                    </tr>
-    
-                    
-                    {% for p in products %}
-                    <tr>
-                        <td>{{ p.tx_product_name }}</td>
-                        <td>{{ p.id_brand }}</td>
-                        <td>{{ p.id_subcategory }}</td>
-                        <td>
-                            <a href="{% url 'update-product' p.id %}" class="btn btn-success">
-                                <i class="fa fa-edit"></i>
-                            </a>
-                            <a href="{% url 'delete-product' p.id %}" class="btn btn-danger">
-                                <i class="fa fa-trash"></i>
-                            </a>
-                        </td>
-                        <td>
-                            <a href="{% url 'create-photo' p.id %}" class="btn btn-info">
-                                <i class="fa fa-plus-square"></i>
-                            </a>
-                        </td>
-                    </tr>
-                    {% endfor %}
+                
+                
+                <div class="table-responsive">
+                    <table class="table table-sm text-center">
+                        <tr>
+                            <th>Name</th>
+                            <th>Brand</th>
+                            <th>Sub Category</th>
+                            <th>Action</th>
+                            <th>Add Photo</th>
+                        </tr>
+        
                         
-                </table>
+                        {% for p in products %}
+                        <tr>
+                            <td>{{ p.tx_product_name }}</td>
+                            <td>{{ p.id_brand }}</td>
+                            <td>{{ p.id_subcategory }}</td>
+                            <td>
+                                <button onclick="open_updateProduct('{% url 'update-product' p.id %}')" 
+                                class="btn btn-success btn-sm mr-2"
+                                data-toggle="tooltip" title="Edit">
+                                    <i class="fa fa-edit"></i>
+                                </button>
+                                <button onclick="open_deleteProduct('{% url 'delete-product' p.id %}')" 
+                                data-toggle="tooltip" title="Delete"
+                                class="btn btn-danger btn-sm">
+                                    <i class="fa fa-trash"></i>
+                                </button>
+                            </td>
+                            <td>
+                                <button onclick="open_createPhoto('{% url 'create-photo' p.id %}')" 
+                                class="btn btn-info btn-sm"
+                                data-toggle="tooltip" title="Add Photo">
+                                    <!-- <strong>two</strong> -->
+                                    <i class="fa fa-plus-circle"></i>
+                                </button>
+                            </td>
+                        </tr>
+                        {% endfor %}
+                            
+                    </table>
+                </div>
             </div>
             <hr>
         </div>
         
-        <div class="col-md-6">
-            <h3><strong>Step 2</strong>
-                <h5 class="text-center text-primary"><strong>Add Product Photo</strong></h5>
-            </h3>
-            <hr>
+        <div class="col-md-6 text-center">
+            <h4 class="text-secondary"><strong>detail photo & color</strong>
+                <i class="fa fa-camera" style="color: teal;"></i></h4>
             <div class="card card-body">
-                <a href="" class="btn btn-primary btn-sm btn-block">Load Photo</a>
-                <table class="table table-sm text-center">
-                    <tr>
-                        <th>Photo</th>
-                        <th>Product</th>
-                        <th>Color</th>
-                        <th>Action</th>
-                        <th>SKU</th>
-                    </tr>
-                    
-                    {% for c in color %}
-                    <tr>
-                        <td>
-                            <img class="img-fluid"
-                            style="width: 50px;" 
-                            src={% for p in c.cdtproductphoto_set.all %}
-                                {% if p.tx_url_photo and p.bl_primary %}
-                                    "{{ p.tx_url_photo.url }}"
-                                {% else %}
-                                    "{% static 'images/img-404.png' %}"
-                                {% endif %}
-                            {% endfor %}
-                            >    
-                        </td>
-                        <td><a class="list-group-item list-group-item-action list-group-item-info" 
-                            href="{% url 'product-detail' c.id %}">
-                            {{ c.id_product }}
-                        </a>
-                        </td>
-                        <td>{{ c.id_color }}</td>
-                        <td>
-                            <a href="{% url 'update-photo' c.id %}" class="btn btn-success">
-                                <i class="fa fa-edit"></i>
-                            </a>
-                            <a href="{% url 'delete-pcolor' c.id %}" class="btn btn-danger">
-                                <i class="fa fa-trash"></i>
-                            </a>
-                        </td>
-                        <td>
-                            <a href="{% url 'create-sku' c.id c.id_product.id %}" class="btn btn-warning">
-                                <i class="fa fa-plus-square"></i>
-                            </a>
-                        </td>
-                    </tr>
-                    {% endfor %}
-                </table>
+                <div class="table-responsive">
+                    <table class="table table-sm text-center">
+                        <tr>
+                            <th>Photo</th>
+                            <th>Product</th>
+                            <th>Color</th>
+                            <th>Action</th>
+                            <th>Add SKU</th>
+                        </tr>
+                        
+                        {% for c in color %}
+                        <tr>
+                            <td>
+                                <img class="img-fluid"
+                                style="width: 40px;" 
+                                src={% for p in c.cdtproductphoto_set.all %}
+                                    {% if p.tx_url_photo and p.bl_primary %}
+                                        "{{ p.tx_url_photo.url }}"
+                                    {% else %}
+                                        "{% static 'images/img-404.png' %}"
+                                    {% endif %}
+                                {% endfor %}
+                                >    
+                            </td>
+                            <td>{{ c.id_product }}</td>
+                            <td>{{ c.id_color }}</td>
+                            <td>
+                                <button onclick="open_updatePhoto('{% url 'update-photo' c.id %}')" 
+                                class="btn btn-success btn-sm mr-2"
+                                data-toggle="tooltip" title="Edit">
+                                    <i class="fa fa-edit"></i>
+                                </button>
+                                <button onclick="open_deletePcolor('{% url 'delete-pcolor' c.id %}')" 
+                                data-toggle="tooltip" title="Delete"
+                                class="btn btn-danger btn-sm">
+                                    <i class="fa fa-trash"></i>
+                                </button>
+                            </td>
+                            <td>
+                                <button onclick="open_createSku('{% url 'create-sku' c.id c.id_product.id %}')" 
+                                class="btn btn-warning btn-sm"
+                                data-toggle="tooltip" title="Add SKU">
+                                    <!-- <strong style="font-size: medium;">three</strong> -->
+                                    <i class="fa fa-plus-circle"></i>
+                                </button>
+                            </td>
+                        </tr>
+                        {% endfor %}
+                    </table>
+                </div>
             </div>
             <hr>
         </div>
     </div>
-    <div class="row">
+
+    <div class="row text-center">
         
-        <div class="col-md">
-            <h3><strong>Step 3</strong>
-                <h5 class="text-center text-primary"><strong>Add Product SKU</strong></h5>
-            </h3>
-            <hr>
+        <div class="col-md" id="dSku">
+            <h4 class="text-secondary"><strong>detail product sku</strong>
+                <i class="fa fa-barcode" style="color: teal;"></i>
+            </h4>
+            <!-- <div id="elements"></div> -->
             <div class="card card-body">
-                <table class="table table-sm text-center">
-                    <tr>
-                        <th>SKU</th>
-                        <th>Product</th>
-                        <th>Product Color</th>
-                        <th>Size</th>
-                        <th>Quantity</th>
-                        <th>Price</th>
-                        <th>Action</th>
-                    </tr>
-                    {% for s in sku %}
-                    <tr>    
-                        <td>{{ s.sku }}</td>
-                        <td>{{ s.id_product }}</td>
-                        <td>{{ s.id_product_color }}</td>
-                        <td>{{ s.id_size }}</td>
-                        <td>{{ s.quantity }}</td>
-                        <td>${{ s.price }}</td>
-                        <td>
-                            <a href="" class="btn btn-success">
-                                <i class="fa fa-edit"></i>
-                            </a>
-                            <a href="" class="btn btn-danger">
-                                <i class="fa fa-trash"></i>
-                            </a>
-                        </td>
-                    </tr>
-                    {% endfor %}
-                </table>
+                <div class="table-responsive">
+                    <table class="table table-sm">
+                        <tr>
+                            <th>SKU</th>
+                            <th>Product</th>
+                            <th>Color</th>
+                            <th>Size</th>
+                            <th>Quantity</th>
+                            <th>Price</th>
+                            <th>Action</th>
+                        </tr>
+                        <!-- <div id="cUrl" hidden>{{ request.path }}</div> -->
+                        {% for s in sku %}
+                        
+                        <tr>
+                            <input type="hidden" >    
+                            <td>{{ s.sku }}</td>
+                            <td>{{ s.id_product }}</td>
+                            <td>{{ s.id_product_color.id_color }}</td>
+                            <td>{{ s.id_size }}</td>
+                            <td>{{ s.quantity }}</td>
+                            <td>${{ s.price }}</td>
+                            <td>
+                                <button onclick="open_createSku('{% url 'update-sku' s.sku %}')"
+                                data-toggle="tooltip" title="Edit"
+                                class="btn btn-success btn-sm mr-2">
+                                    <i class="fa fa-edit"></i>
+                                </button>
+                                <button onclick="open_deleteSku('{% url 'delete-sku' s.sku %}')" 
+                                data-toggle="tooltip" title="Delete"
+                                class="btn btn-danger btn-sm">
+                                    <i class="fa fa-trash"></i>
+                                </button>
+                            </td>
+                        </tr>
+                        {% endfor %}
+                    </table>
+                </div>
+                
+                
             </div>
         </div>
     </div>
 </div>
 
+<div class="modal fade" id="createProduct" role="dialog"></div>
+<div class="modal fade" id="updateProduct" role="dialog"></div>
+<div class="modal fade" id="deleteProduct" role="dialog"></div>
+<div class="modal fade" id="createPhoto" role="dialog"></div>
+<div class="modal fade" id="updatePhoto" role="dialog"></div>
+<div class="modal fade" id="deletePcolor" role="dialog"></div>
+<div class="modal fade" id="createSku" role="dialog"></div>
+<div class="modal fade" id="updateSku" role="dialog"></div>
+<div class="modal fade" id="deleteSku" role="dialog"></div>
 
 {% endblock content %}
+
+
+{% block extrajs %}
+    <script>
+        let $ = jQuery.noConflict()
+
+        $(function () {
+            $('[data-toggle="tooltip"]').tooltip()
+            })     
+
+        function open_createProduct(url){
+            $('#createProduct').load(url, function(){
+                $(this).modal('show')
+            })
+        }
+
+        function open_updateProduct(url){
+            $('#updateProduct').load(url, function(){
+                $(this).modal('show')
+            })
+        }
+
+        function open_deleteProduct(url){
+            $('#deleteProduct').load(url, function(){
+                $(this).modal('show')
+            })
+        }
+        
+        function open_createPhoto(url){
+            $('#createPhoto').load(url, function(){
+                $(this).modal('show')
+            })
+        }
+
+        function open_updatePhoto(url){
+            $('#updatePhoto').load(url, function(){
+                $(this).modal('show')
+            })
+        }
+
+        function open_deletePcolor(url){
+            $('#deletePcolor').load(url, function(){
+                $(this).modal('show')
+            })
+        }
+
+        function open_createSku(url){
+            $('#createSku').load(url, function(){
+                $(this).modal('show')
+            })
+        }
+
+        function open_deleteSku(url){
+            $('#deleteSku').load(url, function(){
+                $(this).modal('show')
+            })
+        }
+
+        function open_updateSku(url){
+            $('#updateSku').load(url, function(){
+                $(this).modal('show')
+            })
+        }
+
+        /* function jumpTo(id){
+            location.href = "{% url 'home' %}"
+            location.hash = "#" + id
+        } */
+    </script>
+    <script src="{% static 'js/product/sku.js' %}"></script>
+
+{% endblock extrajs %}

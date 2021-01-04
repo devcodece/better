@@ -1,63 +1,34 @@
-import json
 from django.shortcuts import render, redirect
-from django.http import HttpResponseRedirect, HttpResponse
-from django.views.generic import CreateView, TemplateView
-from . forms import (TdtProductForm, CdtProductColorForm,
-PhotoInLineFormSet, CdtProductPhotoForm, TdtSkuProductForm)
-#, TdtSkuProductForm, ProductSkuProductForm
-#from django.urls import reverse
+from django.forms.models import inlineformset_factory
 from . models import (TdtProduct, CdtColor, CdtProductPhoto, 
 CdtProductColor, TdtSkuProduct)
-from django.forms.models import inlineformset_factory
+from . forms import (TdtProductForm, CdtProductColorForm,
+PhotoInLineFormSet, CdtProductPhotoForm, TdtSkuProductForm)
+
 
 def home(request):
-    products = TdtProduct.objects.all()
-    color = CdtProductColor.objects.all()
-    sku = TdtSkuProduct.objects.all()
-    
+    products = TdtProduct.objects.all().order_by('-id')[:3]
+    color = CdtProductColor.objects.all().order_by('-id')[:3]
+    sku = TdtSkuProduct.objects.all().order_by('create_date')[:5][::-1]
 
     context = {
         'products':products,
         'color':color,
         'sku':sku,
     }
-    #print(photo)
 
     return render(request, 'dashboard.html', context)
 
-def color_photo(request):
-    return render(request, 'color-photo.html')
 
-def product_info(request):
-    products = TdtProduct.objects.all()
-    context = {
-        'products':products,
-    }
-    return render(request, 'product-info.html', context)
-
-def product_detail(request, pk_test):
-    product_color = CdtProductColor.objects.get(id=pk_test)
-    #product = product_color.id_product.all()
-    photo = product_color.cdtproductphoto_set.all()
-    sku = product_color.tdtskuproduct_set.all()
-    sku_count = sku.count()
-    first = sku.first()
-    #print(price)
-    
-    context = {
-        'product':product_color,
-        #'product':product,
-        'photo':photo,
-        'sku':sku,
-        'sku_count':sku_count,
-        'first':first,
-    }
-    return render(request, 'product-detail.html', context)
-
+###CRUD PRODUCT-BASE
 def createProduct(request):
-
     #Llama de TdtProductForm
-    form = TdtProductForm()
+    form = TdtProductForm(initial={'id_category_person':1,
+                'id_category':1,
+                'id_subcategory':3,
+                'id_brand':1,
+                'id_vendor':1
+                })
 
     #obtener los datos que se envian por POST
     if request.method == 'POST':
@@ -65,30 +36,56 @@ def createProduct(request):
         #Si la informacion del formulario es valido
         if form.is_valid():
             form.save()
-            return redirect('/')
+            return redirect('home')
 
     context = {
         'form':form,
     }
 
-    return render(request, 'product_form.html', context)
+    return render(request, 'catalog/mcreate-product.html', context)
 
 
+def updateProduct(request, pk):
+    products = TdtProduct.objects.get(id=pk)
+    form = TdtProductForm(instance=products)
+    kword = pk
+
+    if request.method == 'POST':
+        form = TdtProductForm(request.POST, instance=products)
+        if form.is_valid():
+            form.save()
+            return redirect('home')
+    
+    context = {
+        'form':form,
+        'kw':kword,
+        }
+
+    return render(request, 'catalog/mupdate-product.html', context)
+
+
+def deleteProduct(request, pk):
+    products = TdtProduct.objects.get(id=pk)
+    if request.method == "POST":
+        products.delete()
+        return redirect('home')
+    
+    context = {
+        'products':products,
+    }
+    
+    return render(request, 'catalog/mdelete-product.html', context)
+
+
+###CRUD PRODUCT COLOR-PHOTO
 def createColorPhoto(request, pk):
     print(pk)
     id_product = pk
 
-    #Llamar al primer form
-    form_one = CdtProductColorForm(initial={'id_product':id_product})
-    #Llamar al segundo form
-    #form_two = CdtProductPhotoForm
-
-    #ColorInLineFormSet = inlineformset_factory(CdtProductColor, CdtProductPhoto, form=CdtProductPhotoForm)
-    #ColorInLineFormSet = inlineformset_factory(CdtProductColor, CdtProductPhoto, fields=('id_product','id_color'))
+    form_one = CdtProductColorForm(initial={'id_product':id_product, 'id_color':1})
 
     form = CdtProductColorForm()
     formset = PhotoInLineFormSet()
-
 
     if request.method == 'POST':
         form = CdtProductColorForm(request.POST)
@@ -101,25 +98,19 @@ def createColorPhoto(request, pk):
                 formset.save()
                 return redirect('home')
 
-
     context = {
         'form_one':form_one,
-        #'form_two':form_two,
         'formset':formset,
+        'kw':id_product,
     }
 
-    return render(request, 'colorphoto.html', context)
-    
+    return render(request, 'catalog/mcreate-photo.html', context)
 
 
-def updateColorPhoto(request, pk):
-    
-    
-    
+def updateColorPhoto(request, pk):    
     pcolor = CdtProductColor.objects.get(id=pk)
+    keyword = pk
     
-
-
     form_one = CdtProductColorForm(instance=pcolor)
     formset = PhotoInLineFormSet(instance=pcolor)
 
@@ -140,105 +131,82 @@ def updateColorPhoto(request, pk):
     context = {
         'form_one':form_one,
         'formset':formset,
+        'kw':keyword,
     }
-    return render(request, 'colorphoto.html', context)
+    return render(request, 'catalog/mupdate-photo.html', context)
 
-
-def updateProduct(request, pk):
-    products = TdtProduct.objects.get(id=pk)
-    form = TdtProductForm(instance=products)
-
-    if request.method == 'POST':
-        form = TdtProductForm(request.POST, instance=products)
-        if form.is_valid():
-            form.save()
-            return redirect('/')
-    
-    context = {
-        'form':form,
-        }
-
-    return render(request, 'product_form.html', context)
 
 def deleteProductColor(request, pk):
     pcolor = CdtProductColor.objects.get(id=pk)
 
     if request.method == 'POST':
         pcolor.delete()
-        return redirect(home)
+        return redirect('home')
 
     context = {
         'pcolor':pcolor
     }
 
-    return render(request, 'delete-pcolor.html', context)
+    return render(request, 'catalog/mdelete-pcolor.html', context)
 
 
-def deleteProduct(request, pk):
-    products = TdtProduct.objects.get(id=pk)
-    if request.method == "POST":
-        products.delete()
-        return redirect('/')
-    
-    context = {
-        'products':products,
-    }
-    
-    return render(request, 'delete.html', context)
-
-
+###CRUD PRODUCT SKU
 def createProductSku(request, pk_one, pk_two):
-    sku = TdtSkuProduct.objects.all().order_by('create_date')[:5][::-1]
-
     id_pc = pk_one
     id_product = pk_two
-    
-    #print(id_product + '***********')
-    #print(pk_one + '===========')
-    #Llamar al primer form
+
     form = TdtSkuProductForm(initial={
         'id_product_color':id_pc,
         'id_product':id_product,
+        'id_size':1,
+
     })
-    #Llamar al segundo form
-    #form_two = CdtProductPhotoForm
-
-    #ColorInLineFormSet = inlineformset_factory(CdtProductColor, CdtProductPhoto, form=CdtProductPhotoForm)
-    #ColorInLineFormSet = inlineformset_factory(CdtProductColor, CdtProductPhoto, fields=('id_product','id_color'))
-
-    #form = CdtProductColorForm()
-    #formset = PhotoInLineFormSet()
-
 
     if request.method == 'POST':
         form = TdtSkuProductForm(request.POST)
         #Si la informacion del formulario es valido
         if form.is_valid():
             form.save()
-            #return redirect('dashboard')
+            return redirect('home')
 
     context = {
         'form':form,
-        'sku':sku,
+        #'sku':sku,
+        'id_pc':id_pc,
+        'id_product':id_product,
     }
 
-    """ if request.is_ajax():
-    #Datos para AJAX
-        list_sku = []
-        for l_sku in sku:
-            data_sku = {}
-            data_sku['sku'] = l_sku.sku
-            data_sku['id_product'] = l_sku.id_product
-            data_sku['id_product_color'] = l_sku.id_product_color
-            data_sku['id_size'] = l_sku.id_size
-            data_sku['quantity'] = l_sku.quantity
-            data_sku['price'] = l_sku.price
-            list_sku.append(data_sku)
-        
-        #convirtiendo la lista en tipo json
-        data = json.dumps(list_sku)
+    return render(request, 'catalog/mcreate-sku.html', context)
 
-        return HttpResponse(data, 'application/jason')
-    else: """
-    return render(request, 'sku.html', context)
 
+def updateSku(request, slug):
+    kw = TdtSkuProduct.objects.get(sku=slug)
+    form = TdtSkuProductForm(instance=kw)
+    kword = slug
+
+    if request.method == 'POST':
+        form = TdtSkuProductForm(request.POST, instance=kw)
+        if form.is_valid():
+            form.save()
+            return redirect('home')
+    
+    context = {
+        'form':form,
+        'kw':kword,
+        }
+
+    return render(request, 'catalog/mupdate-sku.html', context)
+
+
+def deleteSku(request, slug):
+    kw = TdtSkuProduct.objects.get(sku=slug)
+
+    if request.method == "POST":
+        kw.delete()
+        return redirect('home')
+    
+    context = {
+        'kw':kw,
+    }
+    
+    return render(request, 'catalog/mdelete-sku.html', context)

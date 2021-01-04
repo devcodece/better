@@ -1,0 +1,6 @@
+Django==2.2
+django-betterforms==1.2
+django-cleanup==5.1.0
+Pillow==8.0.1
+pytz==2020.4
+sqlparse==0.4.1

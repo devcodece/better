@@ -25,9 +25,9 @@ from django.conf.urls.static import static
 from django.conf import settings
 from django.contrib.auth import logout
 from django.contrib.auth.decorators import login_required
-from app_form.views import (home, product_info, product_detail, 
-createProduct, updateProduct, deleteProduct, createColorPhoto,
-updateColorPhoto, deleteProductColor, createProductSku)
+from app_form.views import (home, createProduct, updateProduct, deleteProduct, 
+                    createColorPhoto, updateColorPhoto, deleteProductColor, 
+                    createProductSku, updateSku, deleteSku)
 #NewProduct, Success
 from user.views import Login, logoutUser
 
@@ -38,11 +38,9 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     #Ruta protegida
     path('', login_required(home), name='home'),
-    path('product-detail/<str:pk_test>/', product_detail, name='product-detail'),
-    path('product-info', product_info, name='product-info'),
 
     #Create Product
-    path('product-form', createProduct, name='product-form'),
+    path('create-product', createProduct, name='create-product'),
     #Update Product
     path('update-product/<str:pk>/', updateProduct, name='update-product'),
     #Delete Product
@@ -57,7 +55,14 @@ urlpatterns = [
     path('delete-pcolor/<str:pk>', deleteProductColor, name='delete-pcolor'),
 
     #Add SKU
+    #Detail-SKU
     path('create-sku/<int:pk_one>/<int:pk_two>', createProductSku, name='create-sku'),
+    #Update SKU
+    path('update-sku/<slug>', updateSku, name='update-sku'),
+    #Delete SKU
+    path('delete-sku/<slug>', deleteSku, name='delete-sku'),
+
+
 
     #LOGIN
     path('accounts/login/', Login.as_view(), name='login'),

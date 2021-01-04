@@ -1,3 +1,16 @@
+
+function jumpTo(id){
+    //location.href = "{% url 'home' %}"
+    location.hash = "#" + id
+    }
+
+
+
+
+//let currentUrl = document.getElementById('cUrl')
+//let cUrl = currentUrl.innerHTML
+//alert(cUrl)
+
 //AJAX with jquery
 /* var $ = jQuery.noConflict(); */
 

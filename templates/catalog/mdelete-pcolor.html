@@ -1,0 +1,25 @@
+<div class="modal-dialog">
+    <div class="modal-content">
+        <div class="modal-header">
+            <h4 class="modal-title"><strong>Delete Product Photo-Color</strong></h4>
+            <button class="close" type="button" data-dismiss="modal" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+            </button>
+        </div>
+        
+        <form action="{% url 'delete-pcolor' pcolor.id %}" method="POST">
+        <div class="modal-body">
+            <h5>Are you sure you want to delete "{{ pcolor }}"</h5>
+
+                {% csrf_token %}
+                {{ form.as_p }}
+                
+        </div>
+        <div class="modal-footer">
+            <input class="btn btn-danger" type="submit" name="Confirm" value="Confirm">
+            <a class="btn btn-warning" href="{% url 'home' %}">Cancel</a>
+        </div>
+        </form>
+
+    </div>
+</div>

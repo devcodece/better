@@ -150,7 +150,7 @@ class TdtSkuProduct(models.Model):
     id_size = models.ForeignKey(CdtSize, on_delete=models.PROTECT, null=True)
     quantity = models.PositiveIntegerField('Quantity')
     price = models.DecimalField('Price', max_digits=9, decimal_places=2)
-    create_date = models.DateField(auto_now_add=True, null=True, blank=True)
+    create_date = models.DateTimeField(auto_now_add=True, null=True, blank=True)
 
     class Meta:
         verbose_name = 'SKU Product'

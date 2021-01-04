@@ -1,0 +1,64 @@
+{% load static %}
+<br>
+
+<div class="modal-dialog modal-lg" role="document">
+    
+    <div class="modal-content">
+        
+        <div class="modal-header">
+            <h4 class="modal-title"><strong>Edit Product SKU</strong></h4>
+            <button class="close" type="button" data-dismiss="modal" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+            </button>
+        </div>
+        <div class="modal-body">
+            <form action="{% url 'update-sku' kw %}" method="POST">
+                {% csrf_token %}
+                <div class="form-row" action="">
+                    <div class="form-group col-md-6">
+                        <label for="pName">SKU:</label>
+                        {{ form.sku }}
+                    </div>
+                    <div class="form-group col-md-6">
+                        <label for="pName">Product:</label>
+                        {{ form.id_product }}
+                    </div>
+                </div>
+                <div class="form-row" action="">
+                    <div class="form-group col-md-6">
+                        <label for="pDescription">Product Color:</label>
+                        {{ form.id_product_color }}
+                    </div>
+                    <div class="form-group col-md-6">
+                        <label for="pDescription">Size:</label>
+                        {{ form.id_size }}
+                    </div>
+                </div>
+                <div class="form-row" action="">
+                    <div class="form-group col-md-6">
+                        <label for="catPerson">Quantity:</label>
+                        {{ form.quantity }}
+                    </div>
+                    <div class="form-group col-md-6">
+                        <label for="category">Price:</label>
+                        ${{ form.price }}
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button class="btn btn-warning px-5" type="button" data-dismiss="modal">Close</button>
+                    <button class="btn btn-success px-5" type="submit">Save</button>
+                    <!-- onclick="jumpTo('elements')" -->
+                </div>
+
+            </form>
+        </div>
+    </div>
+</div>
+
+<!-- src="{% static 'js/product/sku.js' %}" -->
+<script >
+    document.getElementById("id_sku").readOnly = true
+    document.getElementById("id_id_product").readOnly = true
+    document.getElementById("id_id_product_color").readOnly = true
+
+</script>
